@@ -16,7 +16,9 @@ public class WeatherService {
 
   @Autowired
   VisualcrossingRepository weatherRepo;
-
+  public WeatherService(VisualcrossingRepository weatherRepo) {
+    this.weatherRepo = weatherRepo;
+}
   public CityInfo forecastByCity(String city) {
     return weatherRepo.getByCity(city);
   }
@@ -86,10 +88,17 @@ public class WeatherService {
     public String checkRain(String city1, String city2) {
         CityInfo info1 = weatherRepo.getByCity(city1);
         CityInfo info2 = weatherRepo.getByCity(city2);
-
-        if (info1 == null || info2 == null || info1.getCurrentConditions() == null || info2.getCurrentConditions() == null) {
-            return "Error: Could not retrieve current weather data for " + (info1 == null ? city1 : "") + (info2 == null ? " and " + city2 : "") + ".";
-        }
+        if (info1 == null || info2 == null) {
+          if (info1 == null && info2 == null) {
+              return "Error: Could not retrieve current weather data for both " + city1 + " and " + city2 + ".";
+          } else if (info1 == null) {
+              return "Error: Could not retrieve current weather data for " + city1 + ".";
+          } else {
+              return "Error: Could not retrieve current weather data for " + city2 + ".";
+          }
+      }
+  
+    
 
         List<String> precipTypeCity1 = info1.getCurrentConditions().getPrecipType();
         List<String> precipTypeCity2 = info2.getCurrentConditions().getPrecipType();
