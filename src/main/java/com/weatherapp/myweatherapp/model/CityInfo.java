@@ -17,7 +17,7 @@ public class CityInfo {
   @JsonProperty("days")
   private List<Days> days;
 
-  //  Add Getter for currentConditions
+ //  Add Getter for currentConditions
   public CurrentConditions getCurrentConditions() {
     return currentConditions;
   }
@@ -40,7 +40,10 @@ public class CityInfo {
 
     @JsonProperty("conditions")
     private String conditions;
-    
+
+    @JsonProperty("preciptype")  
+    private List<String> precipType;
+
     // more getters for specific fields
     public String getSunrise() {
       return sunrise;
@@ -52,6 +55,10 @@ public class CityInfo {
 
     public String getConditions() {
       return conditions;
+    }
+
+    public List<String> getPrecipType() {  
+      return precipType;
     }
   }
 

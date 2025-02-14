@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.util.List;
 import java.time.Duration;
 
 @Service
@@ -80,4 +81,31 @@ public class WeatherService {
 
     return null; // If parsing fails, return null
   }
+
+    
+    public String checkRain(String city1, String city2) {
+        CityInfo info1 = weatherRepo.getByCity(city1);
+        CityInfo info2 = weatherRepo.getByCity(city2);
+
+        if (info1 == null || info2 == null || info1.getCurrentConditions() == null || info2.getCurrentConditions() == null) {
+            return "Error: Could not retrieve current weather data for " + (info1 == null ? city1 : "") + (info2 == null ? " and " + city2 : "") + ".";
+        }
+
+        List<String> precipTypeCity1 = info1.getCurrentConditions().getPrecipType();
+        List<String> precipTypeCity2 = info2.getCurrentConditions().getPrecipType();
+
+        // Safe check for empty list
+        boolean isRainingCity1 = precipTypeCity1 != null && !precipTypeCity1.isEmpty() && precipTypeCity1.contains("rain");
+        boolean isRainingCity2 = precipTypeCity2 != null && !precipTypeCity2.isEmpty() && precipTypeCity2.contains("rain");
+
+        if (isRainingCity1 && isRainingCity2) {
+            return "It is currently raining in both " + city1 + " and " + city2 + ".";
+        } else if (isRainingCity1) {
+            return "It is currently raining in " + city1 + ".";
+        } else if (isRainingCity2) {
+            return "It is currently raining in " + city2 + ".";
+        } else {
+            return "It is not currently raining in either " + city1 + " or " + city2 + ".";
+        }
+    }
 }
