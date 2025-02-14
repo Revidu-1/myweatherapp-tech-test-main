@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.client.HttpClientErrorException;
 
 @Controller
 public class WeatherController {
@@ -21,9 +22,30 @@ public class WeatherController {
 
     return ResponseEntity.ok(ci);
   }
+  @GetMapping("/compare-daylight/{city1}/{city2}")
+   public ResponseEntity<String> compareDaylightHours(@PathVariable String city1, @PathVariable String city2) {
+      try {
+          return ResponseEntity.ok(weatherService.compareDaylightHours(city1, city2));
+      } catch (HttpClientErrorException.BadRequest e) {
+          return ResponseEntity.badRequest().body("Error: Invalid city name provided.");
+      } catch (IllegalArgumentException e) {
+          return ResponseEntity.badRequest().body(e.getMessage());
+      } catch (Exception e) {
+          return ResponseEntity.internalServerError().body("An unexpected error occurred.");
+      }
+  }
 
-  // TODO: given two city names, compare the length of the daylight hours and return the city with the longest day
-
-  // TODO: given two city names, check which city its currently raining in
+  @GetMapping("/rain-check/{city1}/{city2}")
+  public ResponseEntity<String> checkRain(@PathVariable String city1, @PathVariable String city2) {
+      try {
+          return ResponseEntity.ok(weatherService.checkRain(city1, city2));
+      } catch (HttpClientErrorException.BadRequest e) {
+          return ResponseEntity.badRequest().body("Error: Invalid city name provided.");
+      } catch (IllegalArgumentException e) {
+          return ResponseEntity.badRequest().body(e.getMessage());
+      } catch (Exception e) {
+          return ResponseEntity.internalServerError().body("An unexpected error occurred.");
+      }
+  }
 
 }
