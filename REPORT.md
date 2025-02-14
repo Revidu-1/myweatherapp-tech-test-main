@@ -71,7 +71,7 @@ The implementation follows a clean, modular approach using Spring Boot, with pro
  **All 14 tests passed successfully** 
 
 ## 5. Deployment & Submission
-- The final implementation was **committed to GitHub** under the `feature/weather-service-tests` branch.
+- The final implementation was **committed to GitHub** under the `feature/weather-comparison` branch.
 - A **Pull Request** was raised with proper documentation, review comments, and commit history.
 - The **Maven build passed successfully** with no errors.
 
