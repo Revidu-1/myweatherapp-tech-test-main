@@ -27,5 +27,9 @@ public class WeatherController {
       return ResponseEntity.ok(weatherService.compareDaylightHours(city1, city2));
   }
 
+  @GetMapping("/rain-check/{city1}/{city2}")
+  public ResponseEntity<String> checkRain(@PathVariable String city1, @PathVariable String city2) {
+    return ResponseEntity.ok(weatherService.checkRain(city1, city2));
+}
 
 }
